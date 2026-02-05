@@ -1,0 +1,77 @@
+model:
+  source_path: /data/data3/drj/dataset/Render/flowers
+  data_name: mid_Nerf_360_flowers
+  images: # images_2 images_4 images_8 different resolution
+  resolution: -1
+  white_background: False
+  white_bg: False
+  eval: True
+  sh_degree: 3
+  divide_ratio: 0.8
+  use_opacity_correction: True
+  train_from: sfm  
+  c2f: False
+  c2f_every_step: 1000  # Recompute low pass filter size for every c2f_every_step iterations
+  c2f_max_lowpass: 300  # Maximum low pass filter size
+
+
+trainer:
+  iterations: 30000
+  position_lr_init: 0.00016
+  position_lr_final: 0.0000016
+  position_lr_delay_mult: 0.01
+  position_lr_max_steps: 30000
+  feature_lr: 0.0025
+  opacity_lr: 0.05
+  scaling_lr: 0.005
+  rotation_lr: 0.001
+  percent_dense: 0.01
+  lambda_dssim: 0.2
+  densification_interval: 100
+  opacity_reset_interval: 300000
+  densify_from_iter: 500
+  densify_until_iter: 15000
+  densify_grad_threshold: 0.0002
+  random_background: False
+
+  noise_transport: False
+  noise_begin: 1000
+  noise_end: 14000
+
+  optimizer:
+    name: sparseadam
+    beta1: 0.9
+    beta2: 0.999
+    opacity_deacay: [0.001]
+    opacity_shift: [0]
+    scaling_deacay: [0.00001]
+    scaling_shift: [0]
+
+    opacity_penalty_begin: 3000
+    opacity_penalty_end: 15000
+    scaling_penalty_begin: 1000
+    scaling_penalty_end: 15000
+
+    rsr_exp_avg_inherit: True
+    rsr_exeavg_fading: 0.2
+    rsr_exp_avgsq_inherit: True
+    rsr_exeavgsq_fading: 0.04
+
+  warmup_iter: 0
+  shgreedupdate_begin: 0
+
+  restate_reg:
+    use_rsr: True
+    er_prob: 0.05
+    begin: 1000
+    end: 15000
+    strategy: uni_curriculum
+    interval: 100
+    ratio_list: [0.1, 0.3]
+    ratio_shift: [1000, 7000]
+
+
+pipe:
+  convert_SHs_python: False
+  compute_cov3D_python: False
+  debug: False
