@@ -9,4 +9,8 @@ Official repository for the paper "A Step to Decouple Optimization in 3DGS"
 | [arxiv](https://arxiv.org/abs/2601.16736)
 
 ## Acknowledgements
-This project is built upon [3DGS](https://github.com/graphdeco-inria/gaussian-splatting), [3DGSMCMC]([https://github.com/graphdeco-inria/gaussian-splatting](https://github.com/ubc-vision/3dgs-mcmc)), [Taming-3DGS]([https://github.com/graphdeco-inria/gaussian-splatting](https://humansensinglab.github.io/taming-3dgs/)),  [RAIN-GS]([https://github.com/graphdeco-inria/gaussian-splatting](https://github.com/cvlab-kaist/RAIN-GS)). Please follow the license of 3DGS and the referenced repositories. We gratefully acknowledge all authors for their valuable contributions and open-source releases.
+This project is built upon [3DGS](https://github.com/graphdeco-inria/gaussian-splatting), [3DGSMCMC](https://github.com/ubc-vision/3dgs-mcmc), [Taming-3DGS](https://humansensinglab.github.io/taming-3dgs/)) and [RAIN-GS](https://github.com/cvlab-kaist/RAIN-GS)). Please follow the license of 3DGS and the referenced repositories. We gratefully acknowledge all authors for their valuable contributions and open-source releases.
+
+## Citation
+
+If you find this project useful, please consider citing:
