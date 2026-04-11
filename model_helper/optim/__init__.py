@@ -8,7 +8,7 @@ def get_optimizer(args, params, **kwargs):
     Factory function to get an optimizer by name.
 
     Args:
-        name (str): Name of the optimizer ('adam' or 'lamb').
+        args: dict containing optimizer configuration.
         params (iterable): Parameters to optimize.
         **kwargs: Additional arguments for the optimizer.
 
