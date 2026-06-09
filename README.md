@@ -23,13 +23,44 @@ Official repository for the paper "A Step to Decouple Optimization in 3DGS"
   <em>Figure 1: Coupled Optimization vs. Decoupled Optimization.</em>
 </p>
 
-
-## ToDo List
-
-- [ ] Release replacement files for Taming-3DGS with direct AdamW-GS support.
-
 ## Tutorial
-.
+
+We provide a separate configuration folder for each scene. To run an experiment, simply execute:
+
+```bash
+sh execute.sh -c <cuda> -s <seed>
+```
+
+where `<cuda>` specifies the GPU device and `<seed>` specifies the random seed.
+
+The `config.yaml` file is provided for convenient modification of experimental settings. More implementation details are similar to [3DGS](https://github.com/graphdeco-inria/gaussian-splatting).
+
+We also provide code files that can be used to replace the corresponding components in Taming-3DGS. After replacement, run:
+
+```
+python $ROOT/train.py -s ./dataset/Render/bicycle -i images_4 -m ./  --benchmark_dir ./time --quiet --eval \
+    --test_iterations -1  --optimizer_type sparse_ours --budget 5987095  --densification_interval 100 --mode final_count \
+    --opacity_reset_interval 3000000 \
+    --opacity_penalty_begin 3000 --opacity_penalty_end 14000 --scaling_penalty_begin 1000 --scaling_penalty_end 14000 \
+    --rer_exp_avg_inherit --rer_exeavg_fading 0.2 --rer_exp_avgsq_inherit --rer_exeavgsq_fading 0.04 \
+    --use_er --er_begin 1000 --er_end 14000 --er_strategy uni_curriculum --ratial_list "0.1,0.3" --ratio_shift "1000,7000" \
+    2>&1 | tee ./3dgs_$now.txt
+
+
+python $ROOT/render.py -m ./
+
+python $ROOT/metrics.py -m ./
+```
+
+## Notes
+
+* In the experiments reported in the paper, the default setting uses $N_I/10$. Therefore, all corresponding $\lambda$ values are also scaled by a factor of $1/10$. In the current configuration, we use $N_I$ directly, so the corresponding $\lambda$ values are scaled up by a factor of 10. Please refer to the `experiments` folder for more details. Taming-GS still follows the $N_I/10$ setting.
+* When the number of $N_p$ is small, more conservative restart parameters are preferred, such as `0.1` and `1000`, which are used in several scenes of Taming-GS.
+* When $N_p$ is much larger than $N_a$, the MCMC-based framework may lead to degraded reconstruction quality.
+* We tested different configurations of $\mathcal{C}$ in Eq. 8, including $\{1, 5, 10, 20\}$. The overall differences were minor. Continuing to apply regularization after densification ends brings limited additional benefit.
+
+
+
 
 ## Acknowledgements
 This project is built upon [3DGS](https://github.com/graphdeco-inria/gaussian-splatting), [3DGSMCMC](https://github.com/ubc-vision/3dgs-mcmc), [Taming-3DGS](https://humansensinglab.github.io/taming-3dgs/) and [RAIN-GS](https://github.com/cvlab-kaist/RAIN-GS). Please follow the license of 3DGS and the referenced repositories. We gratefully acknowledge all authors for their valuable contributions and open-source releases.
@@ -42,7 +73,7 @@ If you find this project useful, please consider citing:
 @inproceedings{
 ding2026a,
 title={A Step to Decouple Optimization in 3{DGS}},
-author={Renjie Ding and Yaonan Wang and Min Liu and Jialin Zhu and Jiazheng Wang and Jiahao Zhao and Wenting Shen and Feixiang He and Xiang Chen},
+author={Ding, Renjie and Wang, Yaonan and Liu, Min and Zhu, Jialin and Wang, Jiazheng and Zhao, Jiahao and Shen, Wenting and He, Feixiang and Che, Xiang},
 booktitle={The Fourteenth International Conference on Learning Representations},
 year={2026},
 url={https://openreview.net/forum?id=oapTMDy2Yh}
